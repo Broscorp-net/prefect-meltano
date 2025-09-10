@@ -1,0 +1,20 @@
+[project]
+name = "prefect-meltano"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "anyio>=4.10.0",
+    "prefect>=3.4.17",
+    "singer-sdk>=0.48.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.1.0",
+    "tap-csv",
+]
+
+[tool.uv.sources]
+tap-csv = { git = "https://github.com/MeltanoLabs/tap-csv.git" }
