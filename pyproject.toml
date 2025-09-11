@@ -11,10 +11,15 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "meltanolabs-target-csv",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.1.0",
-    "tap-csv",
+    "tap-csv"
 ]
 
 [tool.uv.sources]
 tap-csv = { git = "https://github.com/MeltanoLabs/tap-csv.git" }
+meltanolabs-target-csv = { git = "https://github.com/MeltanoLabs/target-csv.git" }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

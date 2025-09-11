@@ -1,8 +1,6 @@
 import pytest
-from prefect.testing.utilities import prefect_test_harness
 
 from prefect_meltano.tap_wrapper import run_singer_tap_task
-
 
 from tap_csv.tap import TapCSV
 
@@ -25,14 +23,6 @@ CSV_TAP_CONFIG_ERROR = {
          }
     ]
 }
-
-@pytest.fixture(scope="session", autouse=True)
-def prefect_db():
-    """
-    Sets up test harness for temporary DB during test runs.
-    """
-    with prefect_test_harness():
-        yield
 
 
 @pytest.mark.asyncio

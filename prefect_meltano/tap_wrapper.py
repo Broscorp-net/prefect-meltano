@@ -10,6 +10,8 @@ from typing import Any, Dict, Optional, Type, Union
 from prefect import task
 from singer_sdk import Tap
 
+from prefect_meltano.utils import resolve_class
+
 
 class SingerTapResult:
     def __init__(
@@ -51,31 +53,6 @@ class SingerTapResult:
         return self.exception is None
 
 
-def _resolve_tap_class(tap_ref: Union[str, Type[Tap]]) -> Type[Tap]:
-    if isinstance(tap_ref, type) and issubclass(tap_ref, Tap):
-        return tap_ref
-    if isinstance(tap_ref, str):
-        # Accept "package.module:Class" or "package.module.Class"
-        module_name: str
-        class_name: str
-        if ":" in tap_ref:
-            module_name, class_name = tap_ref.split(":", 1)
-        else:
-            parts = tap_ref.split(".")
-            if len(parts) < 2:
-                raise ValueError(
-                    "tap_ref must be a Tap subclass, 'module:Class', or 'module.Class'"
-                )
-            module_name = ".".join(parts[:-1])
-            class_name = parts[-1]
-        mod = importlib.import_module(module_name)
-        cls = getattr(mod, class_name)
-        if not isinstance(cls, type) or not issubclass(cls, Tap):
-            raise TypeError(f"{tap_ref!r} does not resolve to a singer_sdk.Tap subclass")
-        return cls
-    raise TypeError("tap_ref must be a Tap subclass or a string import path")
-
-
 def run_singer_tap(
         tap_ref: Union[str, Type[Tap]],
         *,
@@ -108,7 +85,7 @@ def run_singer_tap(
     Returns:
       SingerTapResult containing file-like stdout/stderr and an exception if occurred.
     """
-    TapClass: type[Tap] = _resolve_tap_class(tap_ref)
+    TapClass: type[Tap] = resolve_class(tap_ref, Tap)
 
     # Prepare in-memory spooled buffers
     spooled_out = tempfile.SpooledTemporaryFile(mode="w+b", max_size=buffer_max_size)

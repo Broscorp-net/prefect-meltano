@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.13"
 
 [[package]]
@@ -673,6 +673,15 @@ wheels = [
 ]
 
 [[package]]
+name = "meltanolabs-target-csv"
+version = "0.2.0.post3+b5a8620"
+source = { git = "https://github.com/MeltanoLabs/target-csv.git#b5a862097b50f40259732eebaed8f087ff2a1eff" }
+dependencies = [
+    { name = "pytz" },
+    { name = "singer-sdk" },
+]
+
+[[package]]
 name = "oauthlib"
 version = "3.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -840,6 +849,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "meltanolabs-target-csv" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "tap-csv" },
@@ -854,6 +864,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "meltanolabs-target-csv", git = "https://github.com/MeltanoLabs/target-csv.git" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "tap-csv", git = "https://github.com/MeltanoLabs/tap-csv.git" },
