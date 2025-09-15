@@ -2,10 +2,10 @@
 name = "prefect-meltano"
 version = "0.1.0"
 description = "Add your description here"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "anyio>=4.10.0",
-    "prefect>=3.4.17",
+    "prefect==3.1.13",
     "singer-sdk>=0.48.1",
 ]
 
