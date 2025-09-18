@@ -51,6 +51,7 @@ jobs:
         emoji: false
         verbose: false
         job-summary: true
+        custom-pytest: "uv run pytest"
 
   typing:
     name: Type Checking
