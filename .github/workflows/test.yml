@@ -1,0 +1,70 @@
+### A CI workflow template that runs linting and python testing
+### TODO: Modify as needed or as desired.
+
+name: Test tap-tempo
+
+on:
+  push:
+    branches: [main]
+    paths:
+    - .github/workflows/test.yml
+    - prefect_meltano/**
+    - tests/**
+    - pyproject.toml
+    - uv.lock
+  pull_request:
+    branches: [main]
+    paths:
+    - .github/workflows/test.yml
+    - prefect_meltano/**
+    - tests/**
+    - pyproject.toml
+    - uv.lock
+  workflow_dispatch:
+
+env:
+  FORCE_COLOR: 1
+
+jobs:
+  pytest:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+        - "3.11"
+        - "3.12"
+        - "3.13"
+    steps:
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Setup uv
+      uses: astral-sh/setup-uv@b75a909f75acd358c2196fb9a5f1299a9a8868a4 # v6.7.0
+      with:
+        version: ">=0.8"
+    - uses: pavelzw/pytest-action@v2
+      with:
+        emoji: false
+        verbose: false
+        job-summary: true
+
+  typing:
+    name: Type Checking
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Set up Python
+      uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+      with:
+        python-version: 3.x
+    - name: Setup uv
+      uses: astral-sh/setup-uv@b75a909f75acd358c2196fb9a5f1299a9a8868a4 # v6.7.0
+      with:
+        version: ">=0.8"
+    - name: Run Tox
+      run: |
+        uvx --with=tox-uv tox -e typing

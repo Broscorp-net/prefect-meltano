@@ -1,7 +1,7 @@
 [project]
 name = "prefect-meltano"
 version = "0.1.0"
-description = "Add your description here"
+description = "Prefect wrapper tasks for Meltano tap and target"
 requires-python = ">=3.11"
 dependencies = [
     "anyio>=4.10.0",
@@ -11,11 +11,21 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    { include-group = "test" },
     "meltanolabs-target-csv",
-    "pytest>=8.4.2",
-    "pytest-asyncio>=1.1.0",
-    "tap-csv"
+    "tap-csv",
 ]
+test = [
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.2.0",
+    "pytest-github-actions-annotate-failures>=0.3",
+]
+typing = [
+    "mypy>=1.16.0",
+    "ty>=0.0.1-alpha.16",
+    "types-requests",
+]
+
 
 [tool.uv.sources]
 tap-csv = { git = "https://github.com/MeltanoLabs/tap-csv.git" }
@@ -23,3 +33,53 @@ meltanolabs-target-csv = { git = "https://github.com/MeltanoLabs/target-csv.git"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+
+[tool.mypy]
+warn_unused_configs = true
+
+[tool.ruff]
+line-length = 100
+required-version = ">=0.13"
+
+[tool.ruff.lint]
+future-annotations = true
+ignore = [
+    "COM812",  # missing-trailing-comma
+]
+select = ["ALL"]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+## This configuration can be used to customize tox tests as well as other test frameworks like flake8 and mypy
+[tool.tox]
+min_version = "4.22"
+requires = [
+    "tox>=4.22",
+    "tox-uv",
+]
+env_list = [
+    "typing",
+    "py313",
+    "py312",
+    "py311"
+]
+
+# TODO: tox fails due to issue with prefect test harness https://github.com/PrefectHQ/prefect/discussions/17931
+#[tool.tox.env_run_base]
+#runner = "uv-venv-runner"
+#pass_env = [
+#    "GITHUB_*",
+#]
+#dependency_groups = [ "test" ]
+#commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
+#
+#[tool.tox.env.typing]
+#dependency_groups = [ "test", "typing" ]
+#commands = [
+#    [ "mypy", { replace = "posargs", default = [ "prefect_meltano", "tests" ], extend = true } ],
+#    [ "ty", "check", { replace = "posargs", default = [ "prefect_meltano", "tests" ], extend = true } ],
+#]
