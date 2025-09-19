@@ -2,6 +2,23 @@
 name = "prefect-meltano"
 version = "0.1.0"
 description = "Prefect wrapper tasks for Meltano tap and target"
+readme = "README.md"
+authors = [{ name = "Mykhailo Martsyniuk", email = "mykhail@broscorp.net" }]
+keywords = [
+    "ELT",
+    "Prefect",
+    "Meltano"
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+license = "Apache-2.0"
+license-files = [ "LICENSE" ]
 requires-python = ">=3.11"
 dependencies = [
     "anyio>=4.10.0",
