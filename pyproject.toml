@@ -1,6 +1,6 @@
 [project]
 name = "prefect-meltano"
-version = "0.1.0"
+version = "0.1.1"
 description = "Prefect wrapper tasks for Meltano tap and target"
 readme = "README.md"
 authors = [{ name = "Mykhailo Martsyniuk", email = "mykhail@broscorp.net" }]
