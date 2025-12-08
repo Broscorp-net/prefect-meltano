@@ -6,6 +6,7 @@ import tempfile
 from typing import Any, Dict, Optional, Type, Union, IO
 
 from prefect import task
+from prefect.cache_policies import NO_CACHE
 from singer_sdk import Target
 
 from prefect_meltano.utils import resolve_class
@@ -136,7 +137,7 @@ def run_singer_target_from_file(
     )
 
 
-@task(name="run_singer_target_from_file_task", description="Run singer target reading from a file-like input")
+@task(name="run_singer_target_from_file_task", description="Run singer target reading from a file-like input", cache_policy=NO_CACHE)
 async def run_singer_target_task(*args, **kwargs) -> SingerTargetResult:
     """
     Async Prefect task wrapper that executes run_singer_target_from_file in a thread.

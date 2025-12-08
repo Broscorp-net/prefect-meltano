@@ -8,6 +8,7 @@ from contextlib import redirect_stdout, redirect_stderr
 from typing import Any, Dict, Optional, Type, Union
 
 from prefect import task
+from prefect.cache_policies import NO_CACHE
 from singer_sdk import Tap
 
 from prefect_meltano.utils import resolve_class
@@ -195,7 +196,7 @@ def run_singer_tap(
     )
 
 
-@task(name="run_singer_tap_task", description="Execute run_singer_tap as an async Prefect task")
+@task(name="run_singer_tap_task", description="Execute run_singer_tap as an async Prefect task", cache_policy=NO_CACHE)
 async def run_singer_tap_task(*args, **kwargs) -> SingerTapResult:
     """
     Async Prefect task wrapper around run_singer_tap.
